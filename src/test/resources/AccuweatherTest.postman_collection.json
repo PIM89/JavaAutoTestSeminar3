@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "a0fff2a5-2bd8-4c53-acfe-eebd141d2fe0",
+		"name": "AccuweatherTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32308519"
+	},
+	"item": [
+		{
+			"name": "GetLocationByIPAddressTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"locationKey\", pm.response.json().Key)\r",
+							"pm.test(\"Status code 200\", function(){\r",
+							"\tpm.expect(pm.response.code).to.equals(200)\r",
+							"})\r",
+							"pm.test(\"Check response body\", function(){\r",
+							"    pm.expect(pm.response.json().Country.ID).equal(\"RU\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/locations/v1/cities/ipaddress?apikey={{apikey}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"locations",
+						"v1",
+						"cities",
+						"ipaddress"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{apikey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOneHourOfHourlyForecastsTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function(){\r",
+							"\tpm.expect(pm.response.code).to.equals(200)\r",
+							"})\r",
+							"pm.test(\"Check link not null\", function(){\r",
+							"\tpm.expect(pm.response.json().Link).not.equals(null)\r",
+							"})\r",
+							"pm.test(\"Check link not empty\", function(){\r",
+							"\tpm.expect(pm.response.json().Link).not.equals(\"\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/forecasts/v1/hourly/1hour/{{locationKey}}?apikey={{apikey}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"forecasts",
+						"v1",
+						"hourly",
+						"1hour",
+						"{{locationKey}}"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{apikey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLocationTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"pm.test('Count object = ' + pm.response.json().length, function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(24);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.json()[0].Key).to.eql(\"294021\");\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.json()[0].EnglishName).to.eql(\"Moscow\");\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.json()[0].Region.LocalizedName).to.eql(\"Asia\");\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.json()[0].Country.LocalizedName).to.eql(\"Russia\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/locations/v1/cities/search?apikey={{apikey}}&q=Moscow",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"locations",
+						"v1",
+						"cities",
+						"search"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{apikey}}"
+						},
+						{
+							"key": "q",
+							"value": "Moscow"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWeatherOneDayTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200\", function(){\r",
+							"\tpm.expect(pm.response.code).to.equals(200)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/forecasts/v1/daily/1day/294021?apikey={{apikey}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"forecasts",
+						"v1",
+						"daily",
+						"1day",
+						"294021"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{apikey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "locationKey",
+			"value": ""
+		},
+		{
+			"key": "apikey",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
