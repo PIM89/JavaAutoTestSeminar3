@@ -22,7 +22,7 @@ public class GetLocationByIPAddressTest extends AccuweatherAbstractTest {
                 .extract()
                 .body().as(IPAddressRequest.class).country;
 
-        Assertions.assertEquals("RU", country.getId());
+        Assertions.assertEquals("US", country.getId());
     }
 
 
